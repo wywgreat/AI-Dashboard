@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>AI Dashboard</h1>
+      <p>轻量演示版 · 本地可直接预览</p>
+    </header>
+
+    <main class="grid">
+      <section class="card">
+        <h2>系统状态</h2>
+        <ul id="status-list"></ul>
+      </section>
+
+      <section class="card">
+        <h2>今日指标</h2>
+        <div class="metric">
+          <span>请求量</span>
+          <strong id="req-count">0</strong>
+        </div>
+        <div class="metric">
+          <span>成功率</span>
+          <strong id="success-rate">0%</strong>
+        </div>
+      </section>
+
+      <section class="card full">
+        <h2>快速操作</h2>
+        <button id="refresh-btn">刷新数据</button>
+        <p id="last-refresh">尚未刷新</p>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
