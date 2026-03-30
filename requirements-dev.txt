@@ -1,0 +1,4 @@
+-r backend/requirements.txt
+pytest==8.4.1
+mypy==1.17.1
+ruff==0.12.8
