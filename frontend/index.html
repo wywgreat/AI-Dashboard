@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Dashboard</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 24px; }
+      .card { border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+      table { width: 100%; border-collapse: collapse; }
+      th, td { border-bottom: 1px solid #eee; padding: 8px; text-align: left; }
+      .ok { color: #11823b; font-weight: bold; }
+      .error { color: #b00020; font-weight: bold; }
+      pre { background: #fafafa; border: 1px solid #eee; padding: 12px; overflow-x: auto; }
+    </style>
+  </head>
+  <body>
+    <h1>AI Dashboard</h1>
+
+    <div class="card">
+      <h2>来源管理</h2>
+      <p id="generatedAt">加载中...</p>
+      <table>
+        <thead>
+          <tr>
+            <th>来源</th>
+            <th>状态</th>
+            <th>最后同步时间</th>
+            <th>错误信息</th>
+            <th>记录数</th>
+          </tr>
+        </thead>
+        <tbody id="sourcesTableBody"></tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>最新快照</h2>
+      <pre id="snapshot"></pre>
+    </div>
+
+    <script>
+      async function loadSummary() {
+        const response = await fetch('/api/dashboard/summary');
+        const data = await response.json();
+
+        document.getElementById('generatedAt').textContent = `生成时间: ${data.generated_at}`;
+
+        const tbody = document.getElementById('sourcesTableBody');
+        tbody.innerHTML = '';
+
+        data.sources.forEach((source) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${source.source}</td>
+            <td class="${source.status}">${source.status}</td>
+            <td>${source.last_synced_at ?? '-'}</td>
+            <td>${source.error ?? '-'}</td>
+            <td>${source.record_count}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        document.getElementById('snapshot').textContent = JSON.stringify(data.snapshot, null, 2);
+      }
+
+      loadSummary().catch((err) => {
+        document.getElementById('generatedAt').textContent = `加载失败: ${err.message}`;
+      });
+    </script>
+  </body>
+</html>
